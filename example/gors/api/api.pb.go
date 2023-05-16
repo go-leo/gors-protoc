@@ -27,11 +27,11 @@ type ListUsersRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The parent resource name, for example, "shelves/shelf1"
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty" form:"parent"`
 	// The maximum number of items to return.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty" form:"page_size"`
 	// The next_page_token value returned from a previous List request, if any.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty" form:"page_token"`
 }
 
 func (x *ListUsersRequest) Reset() {
@@ -94,9 +94,9 @@ type ListUsersResponse struct {
 
 	// The field name should match the noun "User" in the method name.
 	// There will be a maximum number of items returned based on the page_size field in the request.
-	Users []*User `protobuf:"bytes,1,rep,name=Users,proto3" json:"Users,omitempty"`
+	Users []*User `protobuf:"bytes,1,rep,name=Users,proto3" json:"users,omitempty" form:"users"`
 	// Token to retrieve the next page of results, or empty if there are no more results in the list.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty" form:"next_page_token"`
 }
 
 func (x *ListUsersResponse) Reset() {
@@ -151,7 +151,7 @@ type GetUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The field will contain name of the resource requested.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty" form:"name"`
 }
 
 func (x *GetUserRequest) Reset() {
@@ -199,12 +199,12 @@ type CreateUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The parent resource name where the User is to be created.
-	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty" form:"parent"`
 	// The User id to use for this User.
-	UserId string `protobuf:"bytes,2,opt,name=User_id,json=UserId,proto3" json:"User_id,omitempty"`
+	UserId string `protobuf:"bytes,2,opt,name=User_id,json=UserId,proto3" json:"user_id,omitempty" form:"user_id"`
 	// The User resource to create.
 	// The field name should match the Noun in the method name.
-	User *User `protobuf:"bytes,3,opt,name=User,proto3" json:"User,omitempty"`
+	User *User `protobuf:"bytes,3,opt,name=User,proto3" json:"user,omitempty" form:"user"`
 }
 
 func (x *CreateUserRequest) Reset() {
@@ -266,7 +266,7 @@ type UpdateUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The User resource which replaces the resource on the server.
-	User *User `protobuf:"bytes,1,opt,name=User,proto3" json:"User,omitempty"`
+	User *User `protobuf:"bytes,1,opt,name=User,proto3" json:"user,omitempty" form:"user"`
 }
 
 func (x *UpdateUserRequest) Reset() {
@@ -314,7 +314,7 @@ type DeleteUserRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The resource name of the User to be deleted.
-	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty" form:"name"`
 }
 
 func (x *DeleteUserRequest) Reset() {
@@ -361,8 +361,8 @@ type User struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id   int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Desc string `protobuf:"bytes,2,opt,name=desc,proto3" json:"desc,omitempty"`
+	Id   int64  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty" form:"id"`
+	Desc string `protobuf:"bytes,2,opt,name=desc,proto3" json:"desc,omitempty" form:"desc"`
 }
 
 func (x *User) Reset() {

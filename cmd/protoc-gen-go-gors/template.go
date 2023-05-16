@@ -40,37 +40,53 @@ func _{{.Name}}Handler(ctr {{$svrType}}) gin.HandlerFunc {
 		in := &{{.Request}}{}
 		{{- if .HasBody}}
 		if err := c.Bind(in); err != nil {
-			c.JSON(200, errors.BindCoder)
+			{{- if not $bizCodeModel}}
+			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
+			{{- else}}
+			c.AbortWithStatusJSON(200, errors.BindCoder)
+			{{- end}}
 			c.Abort()
 			return
 		}
 		
 		{{- if not (eq .Body "")}}
 		if err := c.BindQuery(in); err != nil {
-			c.JSON(200, errors.BindCoder)
-			c.Abort()
+			{{- if not $bizCodeModel}}
+			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
+			{{- else}}
+			c.AbortWithStatusJSON(200, errors.BindCoder)
+			{{- end}}
 			return
 		}
 		{{- end}}
 		{{- else}}
 		if err := c.BindQuery(in); err != nil {
-			c.JSON(200, errors.BindCoder)
-			c.Abort()
+			{{- if not $bizCodeModel}}
+			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
+			{{- else}}
+			c.AbortWithStatusJSON(200, errors.BindCoder)
+			{{- end}}
 			return
 		}
 		{{- end}}
 		{{- if .HasVars}}
 		if err := c.BindUri(in); err != nil {
-			c.JSON(200, errors.BindCoder)
-			c.Abort()
+			{{- if not $bizCodeModel}}
+			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
+			{{- else}}
+			c.AbortWithStatusJSON(200, errors.BindCoder)
+			{{- end}}
 			return
 		}
 		{{- end}}
 
 		if v, ok := interface{}(in).(interface{Validate() error}); ok {
 			if err := v.Validate(); err != nil {
-				c.JSON(200, errors.ValidationCoder)
-				c.Abort()
+				{{- if not $bizCodeModel}}
+				c.AbortWithStatusJSON(errors.ValidationCoder.HTTPStatus(), errors.ValidationCoder)
+				{{- else}}
+				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				{{- end}}
 				return
 			}
 		}

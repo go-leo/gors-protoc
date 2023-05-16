@@ -7,7 +7,7 @@ api:
 	@protoc --proto_path=. \
            --proto_path=../third_party \
            --go_out=paths=source_relative:. \
-           --go-gors_out=paths=source_relative,bizcode=false:. \
+           --go-gors_out=paths=source_relative,bizcode=true:. \
            $(shell find . -name "*.proto") && \
 		   protoc-go-inject-tag -input="*.pb.go"
 	@echo "generate api finsh."
