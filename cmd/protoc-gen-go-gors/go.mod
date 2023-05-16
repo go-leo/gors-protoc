@@ -1,4 +1,4 @@
-module github.com/go-leo/gors-protoc/protoc-gen-go-gors
+module github.com/go-leo/gors-protoc/cmd/protoc-gen-go-gors
 
 go 1.18
 
