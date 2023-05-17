@@ -11,6 +11,7 @@ var httpTemplate = `
 {{$svrType := .ServiceType}}
 {{$svrName := .ServiceName}}
 {{$bizCodeModel := .BizCodeModel}}
+{{$setGinErr := .SetGinErr}}
 
 type {{.ServiceType}} interface {
 {{- range .MethodSets}}
@@ -45,36 +46,32 @@ func _{{.Name}}Handler(ctr {{$svrType}}) gin.HandlerFunc {
 			{{- else}}
 			c.AbortWithStatusJSON(200, errors.BindCoder)
 			{{- end}}
-			c.Abort()
+			{{- if $setGinErr}}
+			c.Error(err)
+			{{- end}}
 			return
 		}
-		
-		{{- if not (eq .Body "")}}
+		{{- end}}
 		if err := c.BindQuery(in); err != nil {
 			{{- if not $bizCodeModel}}
 			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
 			{{- else}}
 			c.AbortWithStatusJSON(200, errors.BindCoder)
 			{{- end}}
-			return
-		}
-		{{- end}}
-		{{- else}}
-		if err := c.BindQuery(in); err != nil {
-			{{- if not $bizCodeModel}}
-			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
-			{{- else}}
-			c.AbortWithStatusJSON(200, errors.BindCoder)
+			{{- if $setGinErr}}
+			c.Error(err)
 			{{- end}}
 			return
 		}
-		{{- end}}
 		{{- if .HasVars}}
 		if err := c.BindUri(in); err != nil {
 			{{- if not $bizCodeModel}}
 			c.AbortWithStatusJSON(errors.BindCoder.HTTPStatus(), errors.BindCoder)
 			{{- else}}
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			{{- end}}
+			{{- if $setGinErr}}
+			c.Error(err)
 			{{- end}}
 			return
 		}
@@ -86,6 +83,9 @@ func _{{.Name}}Handler(ctr {{$svrType}}) gin.HandlerFunc {
 				c.AbortWithStatusJSON(errors.ValidationCoder.HTTPStatus(), errors.ValidationCoder)
 				{{- else}}
 				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				{{- end}}
+				{{- if $setGinErr}}
+				c.Error(err)
 				{{- end}}
 				return
 			}
@@ -102,6 +102,9 @@ func _{{.Name}}Handler(ctr {{$svrType}}) gin.HandlerFunc {
 			}
 			{{- else}}
 			c.JSON(coder.HTTPStatus(), errors.ParseCoder(err))
+			{{- end}}
+			{{- if $setGinErr}}
+			c.Error(err)
 			{{- end}}
 			return
 		}
@@ -122,6 +125,7 @@ type serviceDesc struct {
 	// 非业务码模式下，http status code 等于 error定义的http status code
 	// 业务码模式下，http status code 仅在error定义的http status code为500时生效，其余情况下http status code都为200
 	BizCodeModel bool
+	SetGinErr    bool
 }
 
 type methodDesc struct {

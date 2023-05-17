@@ -23,9 +23,9 @@ const (
 
 var methodSets = make(map[string]int)
 
-// generateFile generates a _http.pb.go file containing kratos errors definitions.
-func generateFile(gen *protogen.Plugin, file *protogen.File, omitempty, bizcode bool) *protogen.GeneratedFile {
-	if len(file.Services) == 0 || (omitempty && !hasHTTPRule(file.Services)) {
+// generateFile generates a xxx_http.pb.go file.
+func generateFile(gen *protogen.Plugin, file *protogen.File, cfg Config) *protogen.GeneratedFile {
+	if len(file.Services) == 0 || (cfg.omitempty && !hasHTTPRule(file.Services)) {
 		return nil
 	}
 	filename := file.GeneratedFilenamePrefix + "_http.pb.go"
@@ -42,12 +42,12 @@ func generateFile(gen *protogen.Plugin, file *protogen.File, omitempty, bizcode 
 	g.P()
 	g.P("package ", file.GoPackageName)
 	g.P()
-	generateFileContent(gen, file, g, omitempty, bizcode)
+	generateFileContent(gen, file, g, cfg)
 	return g
 }
 
-// generateFileContent generates the kratos errors definitions, excluding the package statement.
-func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFile, omitempty, bizcode bool) {
+// generateFileContent generates the http handler content.
+func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFile, cfg Config) {
 	if len(file.Services) == 0 {
 		return
 	}
@@ -61,11 +61,11 @@ func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.
 	g.P(")")
 
 	for _, service := range file.Services {
-		genService(gen, file, g, service, omitempty, bizcode)
+		genService(gen, file, g, service, cfg)
 	}
 }
 
-func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFile, service *protogen.Service, omitempty, bizcode bool) {
+func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFile, service *protogen.Service, cfg Config) {
 	if service.Desc.Options().(*descriptorpb.ServiceOptions).GetDeprecated() {
 		g.P("//")
 		g.P(deprecationComment)
@@ -75,7 +75,8 @@ func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.Generated
 		ServiceType:  service.GoName,
 		ServiceName:  string(service.Desc.FullName()),
 		Metadata:     file.Desc.Path(),
-		BizCodeModel: bizcode,
+		BizCodeModel: cfg.bizCode,
+		SetGinErr:    cfg.setGinErr,
 	}
 	for _, method := range service.Methods {
 		if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
@@ -87,7 +88,7 @@ func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.Generated
 				sd.Methods = append(sd.Methods, buildHTTPRule(g, method, bind))
 			}
 			sd.Methods = append(sd.Methods, buildHTTPRule(g, method, rule))
-		} else if !omitempty {
+		} else if !cfg.omitempty {
 			path := fmt.Sprintf("/%s/%s", service.Desc.FullName(), method.Desc.Name())
 			sd.Methods = append(sd.Methods, buildMethodDesc(g, method, "POST", path))
 		}

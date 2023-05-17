@@ -59,12 +59,14 @@ func _ListUsersHandler(ctr UserService) gin.HandlerFunc {
 		in := &ListUsersRequest{}
 		if err := c.BindQuery(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 
 		if v, ok := interface{}(in).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				c.Error(err)
 				return
 			}
 		}
@@ -77,6 +79,7 @@ func _ListUsersHandler(ctr UserService) gin.HandlerFunc {
 			} else {
 				c.JSON(200, coder)
 			}
+			c.Error(err)
 			return
 		}
 
@@ -90,16 +93,19 @@ func _GetUserHandler(ctr UserService) gin.HandlerFunc {
 		in := &GetUserRequest{}
 		if err := c.BindQuery(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 		if err := c.BindUri(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 
 		if v, ok := interface{}(in).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				c.Error(err)
 				return
 			}
 		}
@@ -112,6 +118,7 @@ func _GetUserHandler(ctr UserService) gin.HandlerFunc {
 			} else {
 				c.JSON(200, coder)
 			}
+			c.Error(err)
 			return
 		}
 
@@ -125,17 +132,19 @@ func _CreateUserHandler(ctr UserService) gin.HandlerFunc {
 		in := &CreateUserRequest{}
 		if err := c.Bind(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
-			c.Abort()
+			c.Error(err)
 			return
 		}
 		if err := c.BindQuery(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 
 		if v, ok := interface{}(in).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				c.Error(err)
 				return
 			}
 		}
@@ -148,6 +157,7 @@ func _CreateUserHandler(ctr UserService) gin.HandlerFunc {
 			} else {
 				c.JSON(200, coder)
 			}
+			c.Error(err)
 			return
 		}
 
@@ -161,17 +171,19 @@ func _UpdateUserHandler(ctr UserService) gin.HandlerFunc {
 		in := &UpdateUserRequest{}
 		if err := c.Bind(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
-			c.Abort()
+			c.Error(err)
 			return
 		}
 		if err := c.BindQuery(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 
 		if v, ok := interface{}(in).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				c.Error(err)
 				return
 			}
 		}
@@ -184,6 +196,7 @@ func _UpdateUserHandler(ctr UserService) gin.HandlerFunc {
 			} else {
 				c.JSON(200, coder)
 			}
+			c.Error(err)
 			return
 		}
 
@@ -197,16 +210,19 @@ func _DeleteUserHandler(ctr UserService) gin.HandlerFunc {
 		in := &DeleteUserRequest{}
 		if err := c.BindQuery(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 		if err := c.BindUri(in); err != nil {
 			c.AbortWithStatusJSON(200, errors.BindCoder)
+			c.Error(err)
 			return
 		}
 
 		if v, ok := interface{}(in).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
 				c.AbortWithStatusJSON(200, errors.ValidationCoder)
+				c.Error(err)
 				return
 			}
 		}
@@ -219,6 +235,7 @@ func _DeleteUserHandler(ctr UserService) gin.HandlerFunc {
 			} else {
 				c.JSON(200, coder)
 			}
+			c.Error(err)
 			return
 		}
 
