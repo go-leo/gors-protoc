@@ -9,16 +9,18 @@ import (
 )
 
 var (
-	showVersion = flag.Bool("version", false, "print the version and exit")
-	omitempty   = flag.Bool("omitempty", true, "omit if google.api is empty")
-	bizcode     = flag.Bool("bizcode", true, "open biz code model")
-	setGinErr   = flag.Bool("setGinErr", true, "if has error, set to gin context")
+	showVersion       = flag.Bool("version", false, "print the version and exit")
+	omitempty         = flag.Bool("omitempty", true, "omit if google.api is empty")
+	bizcode           = flag.Bool("bizcode", true, "open biz code model")
+	setGinErr         = flag.Bool("setGinErr", true, "if has error, set to gin context")
+	setPayloadWhenErr = flag.Bool("setPayloadWhenErr", true, "if has error, set req payload to gin context, can use for log")
 )
 
 type Config struct {
-	omitempty bool
-	bizCode   bool
-	setGinErr bool
+	omitempty         bool
+	bizCode           bool
+	setGinErr         bool
+	setPayloadWhenErr bool
 }
 
 func main() {
@@ -29,9 +31,10 @@ func main() {
 	}
 	// init config
 	config := Config{
-		omitempty: *omitempty,
-		bizCode:   *bizcode,
-		setGinErr: *setGinErr,
+		omitempty:         *omitempty,
+		bizCode:           *bizcode,
+		setGinErr:         *setGinErr,
+		setPayloadWhenErr: *setPayloadWhenErr,
 	}
 	// protoc run plugin
 	protogen.Options{

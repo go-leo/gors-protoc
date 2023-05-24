@@ -72,11 +72,12 @@ func genService(gen *protogen.Plugin, file *protogen.File, g *protogen.Generated
 	}
 	// HTTP Server.
 	sd := &serviceDesc{
-		ServiceType:  service.GoName,
-		ServiceName:  string(service.Desc.FullName()),
-		Metadata:     file.Desc.Path(),
-		BizCodeModel: cfg.bizCode,
-		SetGinErr:    cfg.setGinErr,
+		ServiceType:       service.GoName,
+		ServiceName:       string(service.Desc.FullName()),
+		Metadata:          file.Desc.Path(),
+		BizCodeModel:      cfg.bizCode,
+		SetGinErr:         cfg.setGinErr,
+		SetPayloadWhenErr: cfg.setPayloadWhenErr,
 	}
 	for _, method := range service.Methods {
 		if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {

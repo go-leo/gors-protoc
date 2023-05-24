@@ -6,12 +6,13 @@ import (
 	"text/template"
 )
 
-// TODO 模版最后的c.JSON(200, reply)加一个判断如果是 http.body.
+// TODO 模版最后的c.JSON(200, reply)加一个判断如果是 google.http.body, 则流式输出.
 var httpTemplate = `
 {{$svrType := .ServiceType}}
 {{$svrName := .ServiceName}}
 {{$bizCodeModel := .BizCodeModel}}
 {{$setGinErr := .SetGinErr}}
+{{$setPayload := .SetPayloadWhenErr}}
 
 type {{.ServiceType}} interface {
 {{- range .MethodSets}}
@@ -106,6 +107,10 @@ func _{{.Name}}Handler(ctr {{$svrType}}) gin.HandlerFunc {
 			{{- if $setGinErr}}
 			c.Error(err)
 			{{- end}}
+			{{- if $setPayload}}
+			ctx = context.WithValue(ctx, "request-payload", in)
+			c.Request = c.Request.WithContext(ctx)
+			{{- end}}
 			return
 		}
 
@@ -124,8 +129,9 @@ type serviceDesc struct {
 	// 是否是业务码模式；
 	// 非业务码模式下，http status code 等于 error定义的http status code
 	// 业务码模式下，http status code 仅在error定义的http status code为500时生效，其余情况下http status code都为200
-	BizCodeModel bool
-	SetGinErr    bool
+	BizCodeModel      bool
+	SetGinErr         bool
+	SetPayloadWhenErr bool
 }
 
 type methodDesc struct {

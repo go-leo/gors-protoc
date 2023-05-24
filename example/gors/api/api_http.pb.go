@@ -80,6 +80,8 @@ func _ListUsersHandler(ctr UserService) gin.HandlerFunc {
 				c.JSON(200, coder)
 			}
 			c.Error(err)
+			ctx = context.WithValue(ctx, "request-payload", in)
+			c.Request = c.Request.WithContext(ctx)
 			return
 		}
 
@@ -119,6 +121,8 @@ func _GetUserHandler(ctr UserService) gin.HandlerFunc {
 				c.JSON(200, coder)
 			}
 			c.Error(err)
+			ctx = context.WithValue(ctx, "request-payload", in)
+			c.Request = c.Request.WithContext(ctx)
 			return
 		}
 
@@ -158,6 +162,8 @@ func _CreateUserHandler(ctr UserService) gin.HandlerFunc {
 				c.JSON(200, coder)
 			}
 			c.Error(err)
+			ctx = context.WithValue(ctx, "request-payload", in)
+			c.Request = c.Request.WithContext(ctx)
 			return
 		}
 
@@ -197,6 +203,8 @@ func _UpdateUserHandler(ctr UserService) gin.HandlerFunc {
 				c.JSON(200, coder)
 			}
 			c.Error(err)
+			ctx = context.WithValue(ctx, "request-payload", in)
+			c.Request = c.Request.WithContext(ctx)
 			return
 		}
 
@@ -236,6 +244,8 @@ func _DeleteUserHandler(ctr UserService) gin.HandlerFunc {
 				c.JSON(200, coder)
 			}
 			c.Error(err)
+			ctx = context.WithValue(ctx, "request-payload", in)
+			c.Request = c.Request.WithContext(ctx)
 			return
 		}
 
