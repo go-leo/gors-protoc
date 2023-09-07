@@ -23,16 +23,11 @@ type {{.ServiceType}} interface {
 {{- end}}
 }
 
-func {{.ServiceType}}APIRouters(ctr {{.ServiceType}}) []httpserver.Router {
-	return []httpserver.Router{
-		{{- range .Methods}}
-		{
-			HTTPMethod:   "{{.Method}}",
-			Path:         "{{.Path}}",
-			HandlerFuncs: []gin.HandlerFunc{ _{{.Name}}Handler(ctr)},
-		},
-		{{- end}}
-	}
+func Add{{.ServiceType}}Routers[R gin.IRoutes](iRoutes R, ctr {{.ServiceType}}) R {
+	{{- range .Methods}}
+	iRoutes.Handle("{{.Method}}", "{{.Path}}", _{{.Name}}Handler(ctr))
+	{{- end}}
+	return iRoutes
 }
 
 {{range .Methods}}

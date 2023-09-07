@@ -56,7 +56,6 @@ func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.
 	g.P("import  (")
 	g.P(contextPackage.String())
 	g.P(ginPackage.String())
-	g.P("httpserver ", serverPackage.String())
 	g.P(errorsPackage.String())
 	g.P(")")
 
