@@ -14,6 +14,15 @@ message Default {
   bool is_image = 5;
 }
 
+message TestTag {
+  int64 id = 1;
+  string name = 2; // @gotags: form:"name"
+  string email = 3;
+  bool active = 4;
+  bool nonceStr = 5;
+}
+
+
 message IP {
   string Address = 1; // @gotags: valid:"ip" yaml:"ip" json:"overrided"
 }

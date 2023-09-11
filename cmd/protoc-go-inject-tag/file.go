@@ -119,10 +119,14 @@ func parseFile(inputPath string, src interface{}, xxxSkip []string, omit bool) (
 				}
 
 				currentTag := field.Tag.Value
+				ct := currentTag[1 : len(currentTag)-1]
+				if !omit && strings.Contains(ct, ",omitempty") {
+					ct = strings.ReplaceAll(ct, ",omitempty", "")
+				}
 				area := textArea{
 					Start:        int(field.Pos()),
 					End:          int(field.End()),
-					CurrentTag:   currentTag[1 : len(currentTag)-1],
+					CurrentTag:   ct,
 					InjectTag:    tag,
 					CommentStart: int(comment.Pos()),
 					CommentEnd:   int(comment.End()),
