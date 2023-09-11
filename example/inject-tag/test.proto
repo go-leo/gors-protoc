@@ -20,6 +20,7 @@ message TestTag {
   string email = 3;
   bool active = 4;
   bool nonceStr = 5;
+  bool nonceStr2 = 6; // @gotags: json:"nonce_str" form:"nonce_str"
 }
 
 
