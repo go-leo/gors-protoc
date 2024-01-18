@@ -3,24 +3,37 @@ syntax = "proto3";
 package gors.api;
 
 import "google/api/annotations.proto";
+import "grpc-gateway/protoc-gen-swagger/options/annotations.proto";
 
 option go_package = "gors/api;api";
 
 // Generated according to https://cloud.google.com/apis/design/standard_methods
 service UserService {
   rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+      summary: "用户列表"
+      description: "user service"
+    };
     option (google.api.http) = {
       get: "/v1/users"
     };
   }
 
   rpc GetUser(GetUserRequest) returns (User) {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+      summary: "获取用户详情"
+      description: "Get user details"
+    };
     option (google.api.http) = {
       get: "/v1/users/{name}"
     };
   }
 
   rpc CreateUser(CreateUserRequest) returns (User) {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+      summary: "创建用户"
+      description: "create user"
+    };
     option (google.api.http) = {
       post: "/v1/users"
       body: "User"
@@ -28,6 +41,10 @@ service UserService {
   }
 
   rpc UpdateUser(UpdateUserRequest) returns (User) {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+      summary: "更新用户"
+      description: "udpate user return code 200、400"
+    };
     option (google.api.http) = {
       patch: "/v1/users"
       body: "User"
@@ -35,6 +52,10 @@ service UserService {
   }
 
   rpc DeleteUser(DeleteUserRequest) returns (User) {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+      summary: "删除用户"
+      description: "delete user return code 200、400"
+    };
     option (google.api.http) = {
       delete: "/v1/users/{name}"
     };

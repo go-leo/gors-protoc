@@ -12,8 +12,8 @@ var (
 	showVersion = flag.Bool("version", false, "print the version and exit")
 	omitempty   = flag.Bool("omitempty", true, "omit if google.api is empty")
 	bizcode     = flag.Bool("bizcode", true, "open biz code model")
-	setginerr   = flag.Bool("setginerr", true, "if has error, set to gin context")
-	setpayload  = flag.Bool("setpayload", true, "if has error, set req payload to gin context, can use for log")
+	setginerr   = flag.Bool("setginerr", false, "if has error, set to gin context")
+	setpayload  = flag.Bool("setpayload", false, "if has error, set req payload to gin context, can use for log")
 )
 
 type Config struct {
