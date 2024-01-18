@@ -17,9 +17,9 @@ func tagFromComment(comment string) (tag string) {
 func defaultTag(fieldName string, jsonOmit bool) string {
 	snakeName := convertToSnakeCase(fieldName)
 	if jsonOmit {
-		return fmt.Sprintf(`form:"%[1]s" json:"%[1]s,omitempty"`, snakeName)
+		return fmt.Sprintf(`uri:"%[1]s" form:"%[1]s" json:"%[1]s,omitempty"`, snakeName)
 	}
-	return fmt.Sprintf(`form:"%[1]s" json:"%[1]s"`, snakeName)
+	return fmt.Sprintf(`uri:"%[1]s" form:"%[1]s" json:"%[1]s"`, snakeName)
 }
 
 type tagItem struct {
